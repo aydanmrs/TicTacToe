@@ -2,6 +2,7 @@ package com.example.tictactoeapp
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -34,6 +35,13 @@ class GameActivity : AppCompatActivity() {
 
         binding.undo.setOnClickListener {
             resetBoard()
+        }
+
+        binding.backButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+            finish()
         }
     }
 
