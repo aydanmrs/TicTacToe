@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.tictactoeapp.databinding.ActivityGameBinding
+import com.example.tictactoeapp.databinding.DialogExitGameBinding
 import com.example.tictactoeapp.databinding.DialogWinnerBinding
 
 class GameActivity : AppCompatActivity() {
@@ -38,10 +39,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         binding.backButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-            finish()
+            showExitConfirmationDialog()
         }
     }
 
@@ -115,6 +113,10 @@ class GameActivity : AppCompatActivity() {
             dialog.dismiss()
             resetBoard()
         }
+        dialogBinding.buttonQuit.setOnClickListener {
+            dialog.dismiss()
+            quitGame()
+        }
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
@@ -170,5 +172,31 @@ class GameActivity : AppCompatActivity() {
         }
 
         currentPlayer = lastStartingPlayer
+    }
+
+    private fun quitGame() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+        finish()
+    }
+    private fun showExitConfirmationDialog() {
+        val dialog = Dialog(this)
+        val dialogBinding = DialogExitGameBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        dialogBinding.buttonYes.setOnClickListener {
+            dialog.dismiss()
+            quitGame()
+        }
+
+        dialogBinding.buttonNo.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 }
